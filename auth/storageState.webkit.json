@@ -1,0 +1,336 @@
+{
+  "cookies": [
+    {
+      "name": "csrf_cookie",
+      "value": "5tCoXKQo-mDNykU-idyTaTsI",
+      "domain": "micro-nemo.comprodls.com",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "c1_lang",
+      "value": "En",
+      "domain": "micro-nemo.comprodls.com",
+      "path": "/",
+      "expires": 1810897545,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "None"
+    },
+    {
+      "name": "viewport",
+      "value": "desktopMedium",
+      "domain": "micro-nemo.comprodls.com",
+      "path": "/",
+      "expires": 1810897547,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "_gat_UA-28642081-5",
+      "value": "1",
+      "domain": ".comprodls.com",
+      "path": "/",
+      "expires": 1779361607,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "None"
+    },
+    {
+      "name": "_hjSession_1494481",
+      "value": "eyJpZCI6ImY1MGU1OTFiLWI5YTYtNDk2ZS04ODY2LTk0NzI3NDZlNTQ0YyIsImMiOjE3NzkzNjE1NDc1NDAsInMiOjAsInIiOjAsInNiIjowLCJzciI6MCwic2UiOjAsImZzIjoxLCJzcCI6MX0=",
+      "domain": ".comprodls.com",
+      "path": "/",
+      "expires": 1779363347,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "_twpid",
+      "value": "tw.1779361548140.538961604750292569",
+      "domain": ".comprodls.com",
+      "path": "/",
+      "expires": 1813057548.159,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "__hstc",
+      "value": "136178158.2d2d2d7fdc08c6b540c1db668b7e00f7.1779361548673.1779361548673.1779361548673.1",
+      "domain": "micro-nemo.comprodls.com",
+      "path": "/",
+      "expires": 1794913548,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "None"
+    },
+    {
+      "name": "hubspotutk",
+      "value": "2d2d2d7fdc08c6b540c1db668b7e00f7",
+      "domain": "micro-nemo.comprodls.com",
+      "path": "/",
+      "expires": 1794913548,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "None"
+    },
+    {
+      "name": "__hssrc",
+      "value": "1",
+      "domain": "micro-nemo.comprodls.com",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "None"
+    },
+    {
+      "name": "__hssc",
+      "value": "136178158.1.1779361548673",
+      "domain": "micro-nemo.comprodls.com",
+      "path": "/",
+      "expires": 1779363348,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "None"
+    },
+    {
+      "name": "_tt_enable_cookie",
+      "value": "1",
+      "domain": ".comprodls.com",
+      "path": "/",
+      "expires": 1813057549,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "None"
+    },
+    {
+      "name": "_ttp",
+      "value": "01KS53D2ZHSSJ10MBX3EF42HD1_.tt.1",
+      "domain": ".comprodls.com",
+      "path": "/",
+      "expires": 1813057549,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "None"
+    },
+    {
+      "name": "_fbp",
+      "value": "fb.1.1779361549200.81501087128148493",
+      "domain": ".comprodls.com",
+      "path": "/",
+      "expires": 1787137553,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "None"
+    },
+    {
+      "name": "ttcsid_CDQAQLJC77U8SL75P5AG",
+      "value": "1779361549303::1L4shMNF19sS78LpSI9r.1.1779361553802.0",
+      "domain": ".comprodls.com",
+      "path": "/",
+      "expires": 1813057553,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "None"
+    },
+    {
+      "name": "ttcsid",
+      "value": "1779361549304::x8WdaARSf3Z2UAZhNWOZ.1.1779361553802.0::1.-4973.0::4388.1.640.626::0.0.0",
+      "domain": ".comprodls.com",
+      "path": "/",
+      "expires": 1813057553,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "None"
+    },
+    {
+      "name": "_gcl_au",
+      "value": "1.1.1125369623.1779361550.398409921.1779361553.1779361554",
+      "domain": ".comprodls.com",
+      "path": "/",
+      "expires": 1787137550,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "None"
+    },
+    {
+      "name": "glt_3_3ShC5pB8jKeTelr3W5D8j14KJeLTIlVysEm6dYSgY8CT3f4LVW3lM-Cg_pjDFjpb",
+      "value": "st2.s.AtLtsmJT1A.ciI-6t6n6R-MTdoQWLNsSynnhTJBuHeWUy9CJ5nj6CWjPvPxX3eAtaAV_Ls1XYJNO_xbjcsIgEs8yHOU8o2rmCDhMD_pTwE0_IwAUoCbBXNbzVMS9SjAaivuhnb7FumS.ZGo1xZBaBrEy05HyCX2DeQ9EDUY19iYe1VTwCbbXeoo6D9nXt7FKNV5txnAGy4cgRQAp1AK54Jy63gAhiFxenA.sc3",
+      "domain": ".comprodls.com",
+      "path": "/",
+      "expires": 1779383155,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "c1_sid",
+      "value": "s%3AIfCKouO_aWsF5iYBwP60E.UVgDmOw1%2FLv5OscYFX9EXYflemTum0u2Ff1zcf9x%2B%2B4",
+      "domain": ".comprodls.com",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "CloudFront-Key-Pair-Id",
+      "value": "K2W60ZNEKS6FWX",
+      "domain": ".comprodls.com",
+      "path": "/",
+      "expires": 1779620757,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "CloudFront-Signature",
+      "value": "DeNOkXpS0hecUnn7BbRqfk3T5gSvyZfLxcZdWuZ9LCIWXycLke-V~TNz7kZSjya861N2udiR6ffZYwqMYucz3XFM9PN6oDBOv8-AUjJ14s7ljn~qh-QxWOD-b44iz8S2MgTSSKCYgdTDp~h8oyWBEx5UCiN7lCACohZPXbm9JfduIjRf~kgCmA6fyHoEoPOI4Q1~a2LBJIZ11bcLRyBDLZ-zVg-rH-ReVnNEENkdhVTodBR-w7z6qHpaXzg0j-tnH2WMMpeXu9THGcsEAoMNoQCNTc~jac5m2EO1JZmU3Hm04myJGMrlwHFYe3FiY0NIrsmhBi-W2m5aRJQoh6M2tw__",
+      "domain": ".comprodls.com",
+      "path": "/",
+      "expires": 1779620757,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "CloudFront-Policy",
+      "value": "eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9hc2dhcmQtdGhvci1jb250ZW50LmNvbXByb2Rscy5jb20vKiIsIkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiQVdTOkVwb2NoVGltZSI6MTc3OTYyMDc1N319fV19",
+      "domain": ".comprodls.com",
+      "path": "/",
+      "expires": 1779620757,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "_ga",
+      "value": "GA1.2.155585765.1779361547",
+      "domain": ".comprodls.com",
+      "path": "/",
+      "expires": 1842433559,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "None"
+    },
+    {
+      "name": "_gid",
+      "value": "GA1.2.1837809536.1779361547",
+      "domain": ".comprodls.com",
+      "path": "/",
+      "expires": 1779447959,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "None"
+    },
+    {
+      "name": "_ga_4G2G6TG85P",
+      "value": "GS2.1.s1779361547$o1$g1$t1779361560$j47$l0$h0",
+      "domain": ".comprodls.com",
+      "path": "/",
+      "expires": 1842433560,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "None"
+    },
+    {
+      "name": "_hjSessionUser_1494481",
+      "value": "eyJpZCI6IjQ1ZDViMjg2LTkzNzctNTQ0YS04Y2ZhLWFmMzMzZDlkMzk4NyIsImNyZWF0ZWQiOjE3NzkzNjE1NDc1MzYsImV4aXN0aW5nIjp0cnVlfQ==",
+      "domain": ".comprodls.com",
+      "path": "/",
+      "expires": 1810897560,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "csrf-token",
+      "value": "PQakHfA9-ICEq4jK07KQiuy3nIJuLK19g39A",
+      "domain": "micro-nemo.comprodls.com",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "None"
+    }
+  ],
+  "origins": [
+    {
+      "origin": "https://micro-nemo.comprodls.com",
+      "localStorage": [
+        {
+          "name": "lastExternalReferrer",
+          "value": "empty"
+        },
+        {
+          "name": "comprodls.nemo.userLoggedIn",
+          "value": "1779361557355"
+        },
+        {
+          "name": "comprodls.nemo.loggedInUserRole",
+          "value": "superadmin"
+        },
+        {
+          "name": "cup-global-theme",
+          "value": "theme-adult"
+        },
+        {
+          "name": "comprodls.nemo.passwordResetSuccessful-user.undefined",
+          "value": "true"
+        },
+        {
+          "name": "comprodls.nemo.user.44497d08bbbc4d0487488cffff70a640.login",
+          "value": "{\"count\":1}"
+        },
+        {
+          "name": "comprodls.nemo.informationBanner",
+          "value": "true"
+        },
+        {
+          "name": "_gcl_ls",
+          "value": "{\"schema\":\"gcl\",\"version\":1,\"gcl_ctr\":{\"value\":{\"value\":0,\"timeouts\":0,\"errors\":0,\"eopCount\":0,\"creationTimeMs\":1779361550207},\"expires\":1787137550207}}"
+        },
+        {
+          "name": "lastExternalReferrerTime",
+          "value": "1779361549179"
+        },
+        {
+          "name": "li_adsId",
+          "value": "975eec2b-6f4e-4666-9b8a-f15c2dd90b45"
+        },
+        {
+          "name": "c1_lang",
+          "value": "en"
+        }
+      ]
+    },
+    {
+      "origin": "https://cdns.eu1.gigya.com",
+      "localStorage": [
+        {
+          "name": "gig_ucid",
+          "value": "_dkmNoj6cTgG-VTeM25o6A"
+        },
+        {
+          "name": "gmidTicket",
+          "value": "tk1.fiCgeXzqsDh0-0KAj4sradhXCjg7nJEuZAX2W0xeKoM"
+        },
+        {
+          "name": "gmidTicketExpiration",
+          "value": "1779365147859"
+        },
+        {
+          "name": "gig_gmid",
+          "value": "gmid.ver4.AtLtTGkj4A.nR1RHgwFjqhht0JcczW7apqRHVejiSBXNsgK6QJ8J_WxypFI9dDbXU5PLLFM9VPl.KIvcXSMvQDBVAU2B245_6nCfrjB3ypqRh-_IcgyJU_N86q_fpBPB3-h-S61x_ySKeuomdeUrdo-giD3VF8K0lQ.sc3"
+        }
+      ]
+    }
+  ]
+}

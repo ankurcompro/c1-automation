@@ -1,0 +1,193 @@
+{
+  "testSuite": "Licence Creation - Form Validation",
+  "prerequisites": [
+    "User logged-in as support-admin",
+    "Searched for school",
+    "Then went to its School Licences page",
+    "Started creating a licence"
+  ],
+  "testCases": [
+    {
+      "id": "TC_001",
+      "acReference": "AC1",
+      "title": "Licence name field tooltip shows 60 character limit message",
+      "prerequisites": [
+        "User logged-in as support-admin",
+        "Searched for school",
+        "Then went to its School Licences page",
+        "Started creating a licence"
+      ],
+      "tags": ["@validation", "@tooltip", "@licence-name"],
+      "steps": [
+        "Navigate to the Create Licence form",
+        "Hover over the tooltip icon next to the Licence Name field"
+      ],
+      "expectedResult": "Tooltip displays the text: \"Limit max number of characters to 60.\""
+    },
+    {
+      "id": "TC_002",
+      "acReference": "AC2",
+      "title": "Error shown when Licence name exceeds 60 characters",
+      "prerequisites": [
+        "User logged-in as support-admin",
+        "Searched for school",
+        "Then went to its School Licences page",
+        "Started creating a licence"
+      ],
+      "tags": ["@negative", "@validation", "@licence-name", "@character-limit"],
+      "steps": [
+        "Navigate to the Create Licence form",
+        "Enter a licence name that exceeds 60 characters into the Licence Name field"
+      ],
+      "expectedResult": "Error message \"You have exceeded the maximum number of 60 characters for this field.\" appears below the Licence Name field"
+    },
+    {
+      "id": "TC_003",
+      "acReference": "AC3",
+      "title": "Review button is disabled on initial page load",
+      "prerequisites": [
+        "User logged-in as support-admin",
+        "Searched for school",
+        "Then went to its School Licences page",
+        "Started creating a licence"
+      ],
+      "tags": ["@validation", "@review-button", "@initial-state"],
+      "steps": [
+        "Navigate to the Create Licence form",
+        "Observe the state of the Review button without filling in any fields"
+      ],
+      "expectedResult": "The Review button is DISABLED"
+    },
+    {
+      "id": "TC_004",
+      "acReference": "AC4",
+      "title": "Error shown when a duplicate Entitlement ID is added",
+      "prerequisites": [
+        "User logged-in as support-admin",
+        "Searched for school",
+        "Then went to its School Licences page",
+        "Started creating a licence"
+      ],
+      "tags": ["@negative", "@validation", "@entitlement-id", "@duplicate"],
+      "steps": [
+        "Navigate to the Create Licence form",
+        "Add a valid Entitlement ID",
+        "Attempt to add the same Entitlement ID again"
+      ],
+      "expectedResult": "Error message \"This Entitlement ID has already been added\" is displayed"
+    },
+    {
+      "id": "TC_005",
+      "acReference": "AC5a, AC5b",
+      "title": "Warning shown and add entitlement field disabled when 20 Entitlement IDs are added",
+      "prerequisites": [
+        "User logged-in as support-admin",
+        "Searched for school",
+        "Then went to its School Licences page",
+        "Started creating a licence"
+      ],
+      "tags": ["@validation", "@entitlement-id", "@max-limit"],
+      "steps": [
+        "Navigate to the Create Licence form",
+        "Add 20 valid Entitlement IDs one by one"
+      ],
+      "expectedResult": [
+        "AC5a: Warning message \"The maximum number of 20 IDs per licence has been reached\" is displayed",
+        "AC5b: The Add Entitlement ID input field becomes DISABLED"
+      ]
+    },
+    {
+      "id": "TC_006",
+      "acReference": "AC6",
+      "title": "Historical start dates can be selected from the start date field",
+      "prerequisites": [
+        "User logged-in as support-admin",
+        "Searched for school",
+        "Then went to its School Licences page",
+        "Started creating a licence"
+      ],
+      "tags": ["@validation", "@date-picker", "@start-date"],
+      "steps": [
+        "Navigate to the Create Licence form",
+        "Click on the Start Date field",
+        "Attempt to select a date in the past from the date picker"
+      ],
+      "expectedResult": "Historical (past) start dates are selectable"
+    },
+    {
+      "id": "TC_007",
+      "acReference": "AC7",
+      "title": "End date picker disables all dates before the selected start date",
+      "prerequisites": [
+        "User logged-in as support-admin",
+        "Searched for school",
+        "Then went to its School Licences page",
+        "Started creating a licence"
+      ],
+      "tags": ["@validation", "@date-picker", "@end-date"],
+      "steps": [
+        "Navigate to the Create Licence form",
+        "Select a start date from the Start Date field",
+        "Click on the End Date field",
+        "Observe the available dates in the End Date date picker"
+      ],
+      "expectedResult": "All dates prior to the selected start date are disabled in the End Date date picker"
+    },
+    {
+      "id": "TC_008",
+      "acReference": "AC8",
+      "title": "Error shown when end date is manually entered earlier than start date",
+      "prerequisites": [
+        "User logged-in as support-admin",
+        "Searched for school",
+        "Then went to its School Licences page",
+        "Started creating a licence"
+      ],
+      "tags": ["@negative", "@validation", "@date-picker", "@end-date"],
+      "steps": [
+        "Navigate to the Create Licence form",
+        "Select a start date from the Start Date field",
+        "Manually type an end date that is earlier than the selected start date into the End Date field"
+      ],
+      "expectedResult": "Error message \"End date can't be earlier than start date\" is displayed"
+    },
+    {
+      "id": "TC_009",
+      "acReference": "AC9",
+      "title": "Review button becomes enabled when all required fields are completed",
+      "prerequisites": [
+        "User logged-in as support-admin",
+        "Searched for school",
+        "Then went to its School Licences page",
+        "Started creating a licence"
+      ],
+      "tags": ["@positive", "@validation", "@review-button"],
+      "steps": [
+        "Navigate to the Create Licence form",
+        "Complete all required fields in the form"
+      ],
+      "expectedResult": "The Review button becomes ENABLED"
+    },
+    {
+      "id": "TC_010",
+      "acReference": "AC10a, AC10b",
+      "title": "Error and tooltip shown when invalid character is entered in Student Limit field",
+      "prerequisites": [
+        "User logged-in as support-admin",
+        "Searched for school",
+        "Then went to its School Licences page",
+        "Started creating a licence"
+      ],
+      "tags": ["@negative", "@validation", "@student-limit", "@tooltip"],
+      "steps": [
+        "Navigate to the Create Licence form",
+        "Enter an invalid character (e.g. a letter or special character) into the Student Limit field",
+        "Observe the error message below the field and the tooltip icon next to it"
+      ],
+      "expectedResult": [
+        "AC10a: Error message \"Please enter a valid number\" is displayed below the Student Limit field",
+        "AC10b: Tooltip next to the Student Limit field displays: \"Number of active students that can access the course materials. Access continues if the limit is exceeded, but usage will be tracked against the limit you set. The number must be a whole number and can't have decimals, alpha or special characters.\""
+      ]
+    }
+  ]
+}

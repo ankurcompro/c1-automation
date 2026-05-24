@@ -1,0 +1,5 @@
+Pre-requisite steps:
+1. User logged-in as support-admin
+2. Searched for school
+3. Then went to its School Licences page
+4. Started creating a licence
