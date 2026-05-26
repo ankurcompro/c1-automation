@@ -47,6 +47,7 @@ export class SupportAdminCreateLicencePage {
     await this.page.locator('button.add-ent-id').click();
     const idInput = this.page.getByPlaceholder('Enter Entitlement ID').last();
     await idInput.waitFor({ state: 'visible', timeout: 5000 });
+    await idInput.click();
     await idInput.fill(id);
     await this.page.locator('button.add-btn').click();
   }
@@ -186,6 +187,11 @@ export class SupportAdminCreateLicencePage {
 
   get errorItems(): Locator {
     return this.page.locator('li').filter({ hasText: 'is either invalid or does not exist' });
+  }
+
+  // Top-level items in the API error list (direct children, excludes nested EID sub-lists)
+  get licenceApiErrors(): Locator {
+    return this.page.locator('.entitlement-error-list > .error-info');
   }
 
   get reviewButton(): Locator {

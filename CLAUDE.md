@@ -40,9 +40,9 @@ There are no `npm run` scripts — always use `npx playwright test` directly.
 
 ## Authentication
 
-`global-setup.ts` runs before any test suite. It launches Chromium, Firefox, and WebKit sequentially, logs in using credentials from `.env` (`LOGIN_EMAIL`, `LOGIN_PASSWORD`), and saves each browser's storage state to `auth/storageState.{chromium,firefox,webkit}.json`. Tests consume the saved state so they start already authenticated — no login steps needed inside test files.
+`global-setup.ts` runs before any test suite. It launches Chromium, logs in using credentials from `.env` (`LOGIN_EMAIL`, `LOGIN_PASSWORD`), and saves the browser's storage state to `auth/storageState.chromium.json`. Tests consume the saved state so they start already authenticated — no login steps needed inside test files.
 
-Currently only the Chromium project is active in `playwright.config.ts`. Firefox and WebKit projects are commented out.
+Firefox and WebKit login calls are commented out in `global-setup.ts` (and their projects are also commented out in `playwright.config.ts`). To re-enable a browser, uncomment the corresponding `login(...)` line in `global-setup.ts` and the matching project in `playwright.config.ts`.
 
 If auth fails or the session is stale, delete the files in `auth/` and re-run; `global-setup` will regenerate them.
 
@@ -105,7 +105,7 @@ Apply selectors in this priority order:
 2. Unique class scoped inside a parent element
 3. Unique attribute value scoped inside a parent element
 4. Element text — only when none of the above are feasible
-5. Avoid tag name selectors (`div`, `span`, `small`, `img`, etc.)
+5. Avoid tag name selectors — do not prefix selectors with any HTML element name (`div`, `span`, `ul`, `li`, `p`, `small`, `img`, `button`, `tr`, `td`, etc.). Use class, `qid`, `id`, or attribute selectors on their own.
 
 ## Test Authoring Rules
 
@@ -123,6 +123,7 @@ Apply selectors in this priority order:
 - Do **not** create GitHub issues for failures from `npx playwright test` CLI runs.
 - Label issues as `bug`. Include failure screenshot, OS version, and browser version in every issue.
 - **Before creating an issue**, search for an existing open issue with the same test case ID (`mcp__github__search_issues`). If it still exists, do not duplicate. If it has been deleted or closed, create a fresh one.
+- **Always explain a failure to the user before creating a GitHub issue.** For each failing test, describe: what the test asserts, what the app actually showed, and why the assertion fails. Then ask the user to confirm before calling `mcp__github__create_issue`.
 
 ## Email Reporting
 
@@ -137,9 +138,19 @@ Add or remove addresses from that comma-separated list to control who receives r
 
 ## Test Case JSON Authoring
 
+When asked to generate test cases, by default:
+1. Derive test cases from the Acceptance Criteria listed in `testcontexts/ACs.txt`
+2. Fetch pre-requisite steps from `testcontexts/GeneralPreRequisite.txt` and include them in **every** test case
+
 When writing test cases in `test-cases.json`, include the generic pre-requisites from `GeneralPreRequisite.txt` in **every** test case.
 
 These steps must appear at the start of the `steps` (or equivalent) array for each test case, before the test-specific steps.
+
+**Test case order must match ACs.txt.** Assign TC IDs in the exact top-to-bottom sequence the Acceptance Criteria appear in `ACs.txt`. Do not reorder by AC number, type, or any other criterion.
+
+## Generating Playwright Tests from test-cases.json
+
+When asked to implement/generate Playwright test scripts from the json file, use the **Playwright MCP server only** (`mcp__playwright__*`). Do not use the Playwright CLI (`npx playwright test`) for this purpose.
 
 ## Test Context Files (`testcontexts/`)
 
@@ -147,7 +158,7 @@ These steps must appear at the start of the `steps` (or equivalent) array for ea
 |------|---------|
 | `ACs.txt` | Acceptance Criteria for the feature under test |
 | `GeneralPreRequisite.txt` | Pre-requisite steps included in every test case |
-| `testData.txt` | Environment URL, login credentials, and test school name |
+| `GenericTestData.txt` | Environment URL, login credentials, and test school name |
 | `webtestcontext.txt` | Standing instructions for test generation (selectors, environments, authoring rules) |
 | `test-cases.json` | Generated test cases in JSON format, derived from ACs |
 

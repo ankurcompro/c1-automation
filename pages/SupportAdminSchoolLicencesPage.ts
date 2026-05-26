@@ -39,4 +39,20 @@ export class SupportAdminSchoolLicencesPage {
       .first()
       .click();
   }
+
+  getLicenceStatus(licenceName: string): Locator {
+    return this.getLicenceRow(licenceName).getByText(/^Creating$/, { exact: true });
+  }
+
+  getLicenceViewDetailsButton(licenceName: string): Locator {
+    return this.getLicenceRow(licenceName).locator('[qid="viewSlic-2"]');
+  }
+
+  getLicenceEditButton(licenceName: string): Locator {
+    return this.getLicenceRow(licenceName).locator('[qid="viewSlic-3"]');
+  }
+
+  getLicenceDeleteButton(licenceName: string): Locator {
+    return this.getLicenceRow(licenceName).locator('[qid="viewSlic-4"]');
+  }
 }
