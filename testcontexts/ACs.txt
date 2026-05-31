@@ -1,32 +1,39 @@
-[Acceptance Criteria]
-As a Support Admin user who is creating a licence for a school which does not have 200 component permissions, when I first view the Create licence form,
-1) Is there this text "Limit max number of characters to 60." in the tooltip for the Licence name telling me the limit is 60 characters?
- 
-And when I enter a Licence name that exceeds 60 characters,
-2) Does an error message "You have exceeded the maximum number of 60 characters for this field." appear below the field?
- 
-As a Support Admin user who is creating a licence for a school, when I first land on the create licence page,
-3) Is the 'Review' button DISABLED?
- 
-And when I try to add a duplicate Entitlement ID,
-4) Do I see an error message “This Entitlement ID has already been added”?
- 
-And when I add 20 valid Entitlement IDs,
-5a) Does the warning message “The maximum number of 20 IDs per licence has been reached” appears telling me the limit of 20 IDs has been reached?
-5b) Is the add entitlement field DISABLED?
- 
-As a Support Admin user who is creating a licence for a school, when I select the start date field,
-6) Is it possible to select historical start dates?
-And when I select the End date field,
-7) Are all dates before the selected start date disabled?
-And if I manually enter an End date which is prior to the start date,
-8) Does an error “End date can’t be earlier than start date” appears?
- 
-As a Support Admin user who is creating a licence for a school, when I complete all required fields (all of those in the form),
-9) Does the 'Review' button become ENABLED?
- 
-As a Support Admin user who is creating a licence for a school, when I enter an invalid character into the student limit field,
-10a) Do I see an error message “Please enter a valid number”?
-10b) Do I see the following tooltip next to this field advising me of accepted characters?
-         “Number of active students that can access the course materials. Access continues if the limit is exceeded, but usage will be tracked against the limit you set.
-The number must be a whole number and can’t have decimals, alpha or special characters.”
+EID stands for 'Entitlement ID' here
+
+Acceptance Criteria:
+
+AC13) As a Support Admin user who is creating a licence for a school where multiple Entitlement IDs added to the form have the same components, when I click 'Review' and then click 'Create'
+Do I see an Expected error message as mentioned below
+
+EIDs to be used having same component - 21538, 21400
+Expected error message - "Entitlement ID 21400 has the same Component ID projectworkkk as the following Entitlement IDs:
+21538"
+
+AC14) As a Support Admin user who is creating a licence for a school where a component does not exist in comproDLS, when I click 'Review' and then click 'Create'
+Do I see an Expected error message as mentioned below
+
+EID to be used - 21924
+Expected error message - "The Component ID r55practiceextraaaaaaaaaa linked to Entitlement ID 21924 is either invalid or does not exist"
+
+AC15) As a Support Admin user who is creating a licence for a school where an Entitlement ID(s) does not exist or is invalid, when I click 'Review' and then click 'Create'
+Do I see an Expected error message as mentioned below
+
+Expected error message - "The Entitlement ID XXXX is either invalid or does not exist"
+
+AC19) As a Support Admin user who has successfully created a licence for a school with NONE of the error listed above, when I view the licence in the list view while it is still being created,
+19a) Is the status set to 'Creating'?
+19b) Are the kebab menu options to Edit and Delete DISABLED?
+19c) Is the kebab menu option to View Details enabled?
+
+EID to be used - 18767
+
+AC12) As a Support Admin user who is creating a licence for a school with an EntitlementID which is already used in another school licence, when I click 'Review' and then click 'Create'
+Do I see an Expected error message as mentioned below
+
+EID to be used - 18767
+Expected error message - “Entitlement ID XXXX already exists in another school licence (ZZZZ)“
+
+AC16) As a Support Admin user who is creating a licence for a school where a combination of the above errors is present, when I click 'Review' and then click 'Create'
+Are the relevant error messages list above presented as outlined in this ticket?
+
+Scenarios listed exactly in ACs 4,13,14,15,12 above in this given order can be checked in one go here

@@ -14,8 +14,8 @@ dotenv.config({ path: path.resolve(__dirname, '.env') });
 export default defineConfig({
   testDir: './tests',
   globalSetup: './global-setup',
-  /* Run tests in files in parallel */
-  fullyParallel: true,
+  /* Run tests in files in parallel, but tests within each file run sequentially */
+  fullyParallel: false,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */

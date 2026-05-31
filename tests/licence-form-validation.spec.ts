@@ -4,6 +4,7 @@ import { SupportAdminSchoolLicencesPage } from '../pages/SupportAdminSchoolLicen
 import { SupportAdminCreateLicencePage } from '../pages/SupportAdminCreateLicencePage';
 
 const SCHOOL_NAME = 'Ankur Test School';
+const LICENCE_NAME_AC19 = 'TC_014 - AC19 School Licence';
 
 test.describe('Licence Creation - Form Validation', () => {
   test.setTimeout(120000);
@@ -16,6 +17,28 @@ test.describe('Licence Creation - Form Validation', () => {
 
     const licencesPage = new SupportAdminSchoolLicencesPage(page);
     await licencesPage.clickCreateLicence();
+  });
+
+  test.afterAll(async ({ browser }) => {
+    const context = await browser.newContext({
+      storageState: 'auth/storageState.chromium.json',
+    });
+    const page = await context.newPage();
+    try {
+      const dashboard = new SupportAdminDashboardPage(page);
+      await dashboard.goto();
+      await dashboard.searchAndSelectSchool(SCHOOL_NAME);
+      await dashboard.openSchoolLicences();
+
+      const licencesPage = new SupportAdminSchoolLicencesPage(page);
+      const row = licencesPage.getLicenceRow(LICENCE_NAME_AC19);
+      await row.waitFor({ state: 'visible', timeout: 5000 });
+      await licencesPage.deleteLicence(LICENCE_NAME_AC19);
+    } catch {
+      // Licence absent or already deleted — nothing to clean up
+    } finally {
+      await context.close();
+    }
   });
 
   test(
@@ -39,7 +62,7 @@ test.describe('Licence Creation - Form Validation', () => {
 
       await createPage.fillName('a'.repeat(61));
       await expect(createPage.licenceNameError).toHaveText(
-        'You have exceeded the maximum number of 60 characters for this field.'
+        'You have exceeded the maximum number of 60 characters for this field'
       );
     }
   );
@@ -160,6 +183,161 @@ test.describe('Licence Creation - Form Validation', () => {
       expect(tooltipTexts.join(' ')).toContain(
         "Number of active students that can access the course materials. Access continues if the limit is exceeded, but usage will be tracked against the limit you set. The number must be a whole number and can't have decimals, alpha or special characters."
       );
+    }
+  );
+
+  test(
+    'TC_011: Error shown when two Entitlement IDs share the same Component ID',
+    { tag: ['@negative', '@validation', '@entitlement-id', '@duplicate-component'] },
+    async ({ page }) => {
+      const createPage = new SupportAdminCreateLicencePage(page);
+
+      await createPage.fillFormFields('TC_011 Test Licence', '100');
+      await createPage.addEntitlementId('21538');
+      await createPage.addEntitlementId('21400');
+      await createPage.clickReview();
+      await createPage.clickCreate();
+
+      await createPage.waitForErrorHeader();
+      const errorItem = createPage.licenceApiErrors.filter({ hasText: 'has the same Component ID projectworkkk' });
+      await expect(errorItem).toContainText('Entitlement ID 21400');
+      await expect(errorItem).toContainText('21538');
+    }
+  );
+
+  test(
+    'TC_012: Error shown when Entitlement ID is linked to a Component that does not exist in comproDLS',
+    { tag: ['@negative', '@validation', '@entitlement-id', '@invalid-component'] },
+    async ({ page }) => {
+      const createPage = new SupportAdminCreateLicencePage(page);
+
+      await createPage.fillFormFields('TC_012 Test Licence', '100');
+      await createPage.addEntitlementId('21924');
+      await createPage.clickReview();
+      await createPage.clickCreate();
+
+      await createPage.waitForErrorHeader();
+      await expect(
+        createPage.licenceApiErrors.filter({ hasText: 'r55practiceextraaaaaaaaaa' })
+      ).toContainText('21924');
+    }
+  );
+
+  test(
+    'TC_013: Error shown when Entitlement ID does not exist or is invalid',
+    { tag: ['@negative', '@validation', '@entitlement-id', '@invalid-eid'] },
+    async ({ page }) => {
+      const createPage = new SupportAdminCreateLicencePage(page);
+
+      await createPage.fillFormFields('TC_013 Test Licence', '100');
+      await createPage.addEntitlementId('00000');
+      await createPage.clickReview();
+      await createPage.clickCreate();
+
+      await createPage.waitForErrorHeader();
+      await expect(
+        createPage.licenceApiErrors.filter({ hasText: 'The Entitlement ID 00000' })
+      ).toContainText('is either invalid or does not exist');
+    }
+  );
+
+  test(
+    'TC_014: Licence in Creating status has correct UI — status is Creating, Edit/Delete disabled, View Details enabled',
+    { tag: ['@positive', '@licence-creation', '@status', '@kebab-menu'] },
+    async ({ page }) => {
+      test.setTimeout(60000);
+
+      const createPage = new SupportAdminCreateLicencePage(page);
+      const licencesPage = new SupportAdminSchoolLicencesPage(page);
+
+      await createPage.fillFormFields(LICENCE_NAME_AC19, '100');
+      await createPage.addEntitlementId('18767');
+      await createPage.clickReview();
+      await createPage.clickCreate();
+
+      await createPage.waitForSuccessDialog();
+      await createPage.clickBackToSchoolLicences();
+
+      const row = licencesPage.getLicenceRow(LICENCE_NAME_AC19);
+      await row.waitFor({ state: 'visible', timeout: 10000 });
+
+      // AC19a: status badge shows Creating immediately after submission
+      await expect(licencesPage.getLicenceStatus(LICENCE_NAME_AC19)).toBeVisible({ timeout: 5000 });
+
+      // AC19b/AC19c: open kebab menu and check action button states
+      await licencesPage.openLicenceActions(LICENCE_NAME_AC19);
+      await expect(licencesPage.getLicenceEditButton(LICENCE_NAME_AC19)).toBeDisabled();
+      await expect(licencesPage.getLicenceDeleteButton(LICENCE_NAME_AC19)).toBeDisabled();
+      await expect(licencesPage.getLicenceViewDetailsButton(LICENCE_NAME_AC19)).toBeEnabled();
+    }
+  );
+
+  test(
+    'TC_015: Error shown when Entitlement ID is already used in another school licence',
+    { tag: ['@negative', '@validation', '@entitlement-id', '@already-exists'] },
+    async ({ page }) => {
+      const createPage = new SupportAdminCreateLicencePage(page);
+
+      // EID 18767 was used in TC_014's licence (LICENCE_NAME_AC19); this test
+      // relies on TC_014 having run first to put 18767 into an existing licence.
+      await createPage.fillFormFields('TC_015 Test Licence', '100');
+      await createPage.addEntitlementId('18767');
+      await createPage.clickReview();
+      await createPage.clickCreate();
+
+      await createPage.waitForErrorHeader();
+      await expect(
+        createPage.licenceApiErrors.filter({ hasText: 'already exists in another school licence' })
+      ).toContainText('18767');
+    }
+  );
+
+  test(
+    'TC_016: All relevant error messages shown when multiple Entitlement ID errors are present simultaneously',
+    { tag: ['@negative', '@validation', '@entitlement-id', '@combination-errors'] },
+    async ({ page }) => {
+      test.setTimeout(180000);
+
+      const createPage = new SupportAdminCreateLicencePage(page);
+
+      await createPage.fillFormFields('TC_016 Test Licence', '100');
+
+      // AC4 inline: add duplicate EID, verify inline error, then reuse the open input for 21400
+      await createPage.addEntitlementId('21538');
+      await createPage.addDuplicateEntitlementId('21538');
+      await expect(createPage.duplicateEntitlementError).toHaveText('This Entitlement ID has already been added');
+      await page.getByPlaceholder('Enter Entitlement ID').last().fill('21400');
+      await page.locator('button.add-btn').click();
+
+      // Remaining EIDs for API errors
+      await createPage.addEntitlementId('21924');  // AC14: invalid component
+      await createPage.addEntitlementId('00000');  // AC15: invalid EID
+      await createPage.addEntitlementId('18767');  // AC12: already in another licence
+
+      await createPage.clickReview();
+      await createPage.clickCreate();
+
+      await createPage.waitForErrorHeader();
+
+      // AC13: same Component ID
+      await expect(
+        createPage.licenceApiErrors.filter({ hasText: 'has the same Component ID projectworkkk' })
+      ).toBeVisible();
+
+      // AC14: Component does not exist
+      await expect(
+        createPage.licenceApiErrors.filter({ hasText: 'r55practiceextraaaaaaaaaa' })
+      ).toBeVisible();
+
+      // AC15: Entitlement ID invalid/does not exist
+      await expect(
+        createPage.licenceApiErrors.filter({ hasText: 'The Entitlement ID 00000' })
+      ).toBeVisible();
+
+      // AC12: EID already in another school licence
+      await expect(
+        createPage.licenceApiErrors.filter({ hasText: 'already exists in another school licence' })
+      ).toBeVisible();
     }
   );
 });

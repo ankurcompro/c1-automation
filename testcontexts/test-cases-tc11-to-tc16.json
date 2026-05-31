@@ -1,0 +1,173 @@
+{
+  "testSuite": "Licence Creation - Entitlement ID Errors and Post-Creation State",
+  "prerequisites": [
+    "User logged-in as support-admin",
+    "Searched for school",
+    "Then went to its School Licences page",
+    "Started creating a licence"
+  ],
+  "testCases": [
+    {
+      "id": "TC_011",
+      "acReference": "AC13",
+      "title": "Error shown when two Entitlement IDs share the same Component ID",
+      "prerequisites": [
+        "User logged-in as support-admin",
+        "Searched for school",
+        "Then went to its School Licences page",
+        "Started creating a licence"
+      ],
+      "tags": ["@negative", "@validation", "@entitlement-id", "@duplicate-component"],
+      "testData": {
+        "entitlementIds": ["21538", "21400"]
+      },
+      "steps": [
+        "Navigate to the Create Licence form",
+        "Fill in all required fields (Licence Name, Student Limit, Start Date, End Date)",
+        "Add Entitlement ID 21538",
+        "Add Entitlement ID 21400",
+        "Click the Review button",
+        "Click the Create button"
+      ],
+      "expectedResult": "Error message \"Entitlement ID 21400 has the same Component ID projectworkkk as the following Entitlement IDs: 21538\" is displayed"
+    },
+    {
+      "id": "TC_012",
+      "acReference": "AC14",
+      "title": "Error shown when Entitlement ID is linked to a Component that does not exist in comproDLS",
+      "prerequisites": [
+        "User logged-in as support-admin",
+        "Searched for school",
+        "Then went to its School Licences page",
+        "Started creating a licence"
+      ],
+      "tags": ["@negative", "@validation", "@entitlement-id", "@invalid-component"],
+      "testData": {
+        "entitlementId": "21924"
+      },
+      "steps": [
+        "Navigate to the Create Licence form",
+        "Fill in all required fields (Licence Name, Student Limit, Start Date, End Date)",
+        "Add Entitlement ID 21924",
+        "Click the Review button",
+        "Click the Create button"
+      ],
+      "expectedResult": "Error message \"The Component ID r55practiceextraaaaaaaaaa linked to Entitlement ID 21924 is either invalid or does not exist\" is displayed"
+    },
+    {
+      "id": "TC_013",
+      "acReference": "AC15",
+      "title": "Error shown when Entitlement ID does not exist or is invalid",
+      "prerequisites": [
+        "User logged-in as support-admin",
+        "Searched for school",
+        "Then went to its School Licences page",
+        "Started creating a licence"
+      ],
+      "tags": ["@negative", "@validation", "@entitlement-id", "@invalid-eid"],
+      "testData": {
+        "entitlementId": "A non-existent or invalid Entitlement ID (e.g. 00000)"
+      },
+      "steps": [
+        "Navigate to the Create Licence form",
+        "Fill in all required fields (Licence Name, Student Limit, Start Date, End Date)",
+        "Add a non-existent or invalid Entitlement ID",
+        "Click the Review button",
+        "Click the Create button"
+      ],
+      "expectedResult": "Error message \"The Entitlement ID XXXX is either invalid or does not exist\" is displayed (where XXXX is the invalid EID entered)"
+    },
+    {
+      "id": "TC_014",
+      "acReference": "AC19a, AC19b, AC19c",
+      "title": "Licence in Creating status shows correct UI state — status is Creating, Edit/Delete disabled, View Details enabled",
+      "prerequisites": [
+        "User logged-in as support-admin",
+        "Searched for school",
+        "Then went to its School Licences page",
+        "Started creating a licence"
+      ],
+      "tags": ["@positive", "@licence-creation", "@status", "@kebab-menu"],
+      "testData": {
+        "entitlementId": "18767"
+      },
+      "steps": [
+        "Navigate to the Create Licence form",
+        "Fill in all required fields (Licence Name, Student Limit, Start Date, End Date)",
+        "Add Entitlement ID 18767",
+        "Click the Review button",
+        "Click the Create button (with no errors present)",
+        "Immediately observe the newly created licence row in the School Licences list view",
+        "Check the status badge on the licence row",
+        "Open the kebab menu (⋮) on the licence row",
+        "Check the enabled/disabled state of the Edit and Delete menu options",
+        "Check the enabled/disabled state of the View Details menu option"
+      ],
+      "expectedResult": [
+        "AC19a: The status badge on the licence row displays 'Creating'",
+        "AC19b: The kebab menu options 'Edit' and 'Delete' are DISABLED",
+        "AC19c: The kebab menu option 'View Details' is ENABLED"
+      ]
+    },
+    {
+      "id": "TC_015",
+      "acReference": "AC12",
+      "title": "Error shown when Entitlement ID is already used in another school licence",
+      "prerequisites": [
+        "User logged-in as support-admin",
+        "Searched for school",
+        "Then went to its School Licences page",
+        "Started creating a licence"
+      ],
+      "tags": ["@negative", "@validation", "@entitlement-id", "@already-exists"],
+      "testData": {
+        "entitlementId": "18767"
+      },
+      "steps": [
+        "Navigate to the Create Licence form",
+        "Fill in all required fields (Licence Name, Student Limit, Start Date, End Date)",
+        "Add Entitlement ID 18767 (which is already associated with another school licence)",
+        "Click the Review button",
+        "Click the Create button"
+      ],
+      "expectedResult": "Error message \"Entitlement ID 18767 already exists in another school licence (ZZZZ)\" is displayed (where ZZZZ is the name of the existing licence)"
+    },
+    {
+      "id": "TC_016",
+      "acReference": "AC16",
+      "title": "All relevant error messages are shown when multiple Entitlement ID errors are present simultaneously",
+      "prerequisites": [
+        "User logged-in as support-admin",
+        "Searched for school",
+        "Then went to its School Licences page",
+        "Started creating a licence"
+      ],
+      "tags": ["@negative", "@validation", "@entitlement-id", "@combination-errors"],
+      "testData": {
+        "duplicateEntitlementId": "Any valid EID added twice (triggers AC4 inline error)",
+        "sameComponentEids": ["21538", "21400"],
+        "invalidComponentEid": "21924",
+        "nonExistentEid": "A non-existent or invalid EID (e.g. 00000)",
+        "alreadyUsedEid": "18767"
+      },
+      "steps": [
+        "Navigate to the Create Licence form",
+        "Fill in all required fields (Licence Name, Student Limit, Start Date, End Date)",
+        "Add a valid Entitlement ID, then attempt to add the same ID again — verify the inline duplicate error (AC4: \"This Entitlement ID has already been added\") appears",
+        "Add Entitlement IDs 21538 and 21400 (same Component ID, triggers AC13 error)",
+        "Add Entitlement ID 21924 (invalid component, triggers AC14 error)",
+        "Add a non-existent or invalid Entitlement ID (triggers AC15 error)",
+        "Add Entitlement ID 18767 (already used in another licence, triggers AC12 error)",
+        "Click the Review button",
+        "Click the Create button"
+      ],
+      "expectedResult": [
+        "AC4 (inline, before Review): \"This Entitlement ID has already been added\"",
+        "AC13 (after Create): \"Entitlement ID 21400 has the same Component ID projectworkkk as the following Entitlement IDs: 21538\"",
+        "AC14 (after Create): \"The Component ID r55practiceextraaaaaaaaaa linked to Entitlement ID 21924 is either invalid or does not exist\"",
+        "AC15 (after Create): \"The Entitlement ID XXXX is either invalid or does not exist\"",
+        "AC12 (after Create): \"Entitlement ID 18767 already exists in another school licence (ZZZZ)\""
+      ]
+    }
+  ]
+}
