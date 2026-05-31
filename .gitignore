@@ -6,6 +6,7 @@ node_modules/
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
+/auth/
 .env
 
 # Playwright MCP session recordings (may contain sensitive typed text)

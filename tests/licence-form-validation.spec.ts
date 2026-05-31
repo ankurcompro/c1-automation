@@ -19,6 +19,28 @@ test.describe('Licence Creation - Form Validation', () => {
     await licencesPage.clickCreateLicence();
   });
 
+  test.afterAll(async ({ browser }) => {
+    const context = await browser.newContext({
+      storageState: 'auth/storageState.chromium.json',
+    });
+    const page = await context.newPage();
+    try {
+      const dashboard = new SupportAdminDashboardPage(page);
+      await dashboard.goto();
+      await dashboard.searchAndSelectSchool(SCHOOL_NAME);
+      await dashboard.openSchoolLicences();
+
+      const licencesPage = new SupportAdminSchoolLicencesPage(page);
+      const row = licencesPage.getLicenceRow(LICENCE_NAME_AC19);
+      await row.waitFor({ state: 'visible', timeout: 5000 });
+      await licencesPage.deleteLicence(LICENCE_NAME_AC19);
+    } catch {
+      // Licence absent or already deleted — nothing to clean up
+    } finally {
+      await context.close();
+    }
+  });
+
   test(
     'TC_001: Licence name field tooltip shows 60 character limit message',
     { tag: ['@validation', '@tooltip', '@licence-name'] },
@@ -40,7 +62,7 @@ test.describe('Licence Creation - Form Validation', () => {
 
       await createPage.fillName('a'.repeat(61));
       await expect(createPage.licenceNameError).toHaveText(
-        'You have exceeded the maximum number of 60 characters for this field.'
+        'You have exceeded the maximum number of 60 characters for this field'
       );
     }
   );
@@ -164,7 +186,7 @@ test.describe('Licence Creation - Form Validation', () => {
     }
   );
 
-  test.only(
+  test(
     'TC_011: Error shown when two Entitlement IDs share the same Component ID',
     { tag: ['@negative', '@validation', '@entitlement-id', '@duplicate-component'] },
     async ({ page }) => {
@@ -183,7 +205,7 @@ test.describe('Licence Creation - Form Validation', () => {
     }
   );
 
-  test.only(
+  test(
     'TC_012: Error shown when Entitlement ID is linked to a Component that does not exist in comproDLS',
     { tag: ['@negative', '@validation', '@entitlement-id', '@invalid-component'] },
     async ({ page }) => {
@@ -201,7 +223,7 @@ test.describe('Licence Creation - Form Validation', () => {
     }
   );
 
-  test.only(
+  test(
     'TC_013: Error shown when Entitlement ID does not exist or is invalid',
     { tag: ['@negative', '@validation', '@entitlement-id', '@invalid-eid'] },
     async ({ page }) => {
@@ -219,7 +241,7 @@ test.describe('Licence Creation - Form Validation', () => {
     }
   );
 
-  test.only(
+  test(
     'TC_014: Licence in Creating status has correct UI — status is Creating, Edit/Delete disabled, View Details enabled',
     { tag: ['@positive', '@licence-creation', '@status', '@kebab-menu'] },
     async ({ page }) => {
@@ -250,7 +272,7 @@ test.describe('Licence Creation - Form Validation', () => {
     }
   );
 
-  test.only(
+  test(
     'TC_015: Error shown when Entitlement ID is already used in another school licence',
     { tag: ['@negative', '@validation', '@entitlement-id', '@already-exists'] },
     async ({ page }) => {
@@ -270,7 +292,7 @@ test.describe('Licence Creation - Form Validation', () => {
     }
   );
 
-  test.only(
+  test(
     'TC_016: All relevant error messages shown when multiple Entitlement ID errors are present simultaneously',
     { tag: ['@negative', '@validation', '@entitlement-id', '@combination-errors'] },
     async ({ page }) => {

@@ -17,10 +17,10 @@ The default workflow is **three steps, in order**:
 npx playwright test
 
 # Run a specific test file
-npx playwright test tests/licence-invalid-entitlement.spec.ts
+npx playwright test tests/licence-form-validation.spec.ts
 
 # Run in headed mode (visible browser)
-npx playwright test tests/licence-invalid-entitlement.spec.ts --headed
+npx playwright test tests/licence-form-validation.spec.ts --headed
 
 # Run by tag
 npx playwright test --grep @negative
@@ -54,10 +54,12 @@ Defined in `playwright.config.ts`:
 |---------|-------|----|
 | Workers | 2 | 1 |
 | Retries | 0 | 2 |
-| Parallel | `fullyParallel` | `fullyParallel` |
+| Within-file order | Sequential (`fullyParallel: false`) | Sequential |
 | Video | `on` (every run) | `on` (every run) |
 | Trace | `on-first-retry` | `on-first-retry` |
 | Screenshot | `only-on-failure` | `only-on-failure` |
+
+`fullyParallel: false` means test files can run in parallel across workers, but tests **within a single file always run sequentially** in definition order. This is required for test suites where later tests depend on state created by earlier ones (e.g. TC_015 relies on TC_014 having created a licence). Do **not** use `test.describe.serial()` to achieve ordering — it skips remaining tests on any failure, which is not the desired behaviour here.
 
 Video is recorded for every run. To save space, change `video: 'on'` to `'retain-on-failure'` in `playwright.config.ts`.
 
@@ -72,6 +74,34 @@ All page interactions live in `pages/`. Each page class:
 - Has `waitFor*` helpers for async state (e.g. `waitForErrorHeader`)
 
 Page class names are **prefixed with the user type** — e.g. `SupportAdmin` — so classes are identifiable by which user role interacts with them.
+
+### Licence Lifecycle Helpers
+
+`SupportAdminSchoolLicencesPage` has two helpers that encapsulate the full licence lifecycle:
+
+- **`waitForLicenceActive(licenceName)`** — polls with the Refresh button until the licence row shows "Active". Use before any operation that requires an Active licence (edit, delete).
+- **`deleteLicence(licenceName)`** — waits for Active, opens the actions kebab menu, clicks Delete, confirms in the "Delete?" modal, dismisses the "being deleted" dialog, then polls until the row disappears. Handles the intermediate "Deleting" status automatically.
+
+### Test Cleanup Pattern
+
+Tests that successfully create a licence must clean it up in `test.afterAll`. The standard pattern:
+
+```typescript
+test.afterAll(async ({ browser }) => {
+  const context = await browser.newContext({ storageState: 'auth/storageState.chromium.json' });
+  const page = await context.newPage();
+  try {
+    // navigate to licences page, then:
+    await licencesPage.deleteLicence(LICENCE_NAME);
+  } catch {
+    // licence absent or already deleted — safe to ignore
+  } finally {
+    await context.close();
+  }
+});
+```
+
+Only tests that call `waitForSuccessDialog()` actually create a persistent licence. Tests that end with `waitForErrorHeader()` leave no record in the database.
 
 ### Test Files
 
