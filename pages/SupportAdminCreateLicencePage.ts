@@ -37,10 +37,10 @@ export class SupportAdminCreateLicencePage {
   async fillFormFields(licenceName: string, studentLimit: string) {
     await this.fillName(licenceName);
     await this.fillStudentLimit(studentLimit);
-    // picker-0 = start date (May 15, 2026 — current month, no navigation)
-    await this.pickDate('schoolLicenceStartDate', 0, 15, 'May', 2026, 0);
-    // picker-1 = end date (May 30, 2027 — 12 months ahead)
-    await this.pickDate('schoolLicenceEndDate', 1, 30, 'May', 2027, 12);
+    // picker-0 = start date (Jun 15, 2026 — current month, no navigation)
+    await this.pickDate('schoolLicenceStartDate', 0, 15, 'Jun', 2026, 0);
+    // picker-1 = end date (Jun 30, 2027 — 12 months ahead)
+    await this.pickDate('schoolLicenceEndDate', 1, 30, 'Jun', 2027, 12);
   }
 
   async addEntitlementId(id: string) {

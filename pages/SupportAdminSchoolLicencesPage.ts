@@ -21,6 +21,7 @@ export class SupportAdminSchoolLicencesPage {
     const refreshBtn = this.page.getByRole('button', { name: /refresh/i });
     for (let i = 0; i < maxRetries; i++) {
       if (await row.getByText('Active').isVisible()) break;
+      if (await row.getByText('Not started').isVisible()) break;
       await refreshBtn.click();
       await this.page.waitForTimeout(intervalMs);
     }

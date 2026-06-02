@@ -3,7 +3,7 @@ import { SupportAdminDashboardPage } from '../pages/SupportAdminDashboardPage';
 import { SupportAdminSchoolLicencesPage } from '../pages/SupportAdminSchoolLicencesPage';
 import { SupportAdminCreateLicencePage } from '../pages/SupportAdminCreateLicencePage';
 
-const SCHOOL_NAME = 'Ankur Test School';
+const SCHOOL_NAME = 'Compro Test School (DO NOT USE)';
 const LICENCE_NAME_AC19 = 'TC_014 - AC19 School Licence';
 
 test.describe('Licence Creation - Form Validation', () => {
@@ -17,6 +17,28 @@ test.describe('Licence Creation - Form Validation', () => {
 
     const licencesPage = new SupportAdminSchoolLicencesPage(page);
     await licencesPage.clickCreateLicence();
+  });
+
+  test.beforeAll(async ({ browser }) => {
+    const context = await browser.newContext({
+      storageState: 'auth/storageState.chromium.json',
+    });
+    const page = await context.newPage();
+    try {
+      const dashboard = new SupportAdminDashboardPage(page);
+      await dashboard.goto();
+      await dashboard.searchAndSelectSchool(SCHOOL_NAME);
+      await dashboard.openSchoolLicences();
+
+      const licencesPage = new SupportAdminSchoolLicencesPage(page);
+      const row = licencesPage.getLicenceRow(LICENCE_NAME_AC19);
+      await row.waitFor({ state: 'visible', timeout: 5000 });
+      await licencesPage.deleteLicence(LICENCE_NAME_AC19);
+    } catch {
+      // Licence absent or already deleted — nothing to clean up
+    } finally {
+      await context.close();
+    }
   });
 
   test.afterAll(async ({ browser }) => {
@@ -116,8 +138,8 @@ test.describe('Licence Creation - Form Validation', () => {
     async ({ page }) => {
       const createPage = new SupportAdminCreateLicencePage(page);
 
-      // Navigate 1 month back to April 2026 and select a past date
-      await createPage.selectStartDate(1, 'Apr', 2026, -1);
+      // Navigate 2 months back to April 2026 and select a past date
+      await createPage.selectStartDate(1, 'Apr', 2026, -2);
 
       await expect(page.locator('#schoolLicenceStartDate')).not.toHaveValue('');
     }
@@ -129,11 +151,11 @@ test.describe('Licence Creation - Form Validation', () => {
     async ({ page }) => {
       const createPage = new SupportAdminCreateLicencePage(page);
 
-      // Set a future start date (1 month ahead = June 2026)
-      await createPage.selectStartDate(1, 'Jun', 2026, 1);
+      // Set a future start date (1 month ahead = July 2026)
+      await createPage.selectStartDate(1, 'Jul', 2026, 1);
 
-      // Open end date picker — it opens on the current month (May 2026)
-      // All May dates are before June 1, so they should all be disabled
+      // Open end date picker — it opens on the current month (June 2026)
+      // All June dates are before July 1, so they should all be disabled
       const endPicker = await createPage.openEndDatePicker();
       await expect(endPicker.locator('td.owl-dt-calendar-cell-disabled').first()).toBeVisible();
     }
@@ -145,9 +167,9 @@ test.describe('Licence Creation - Form Validation', () => {
     async ({ page }) => {
       const createPage = new SupportAdminCreateLicencePage(page);
 
-      await createPage.selectStartDate(1, 'Jun', 2026, 1);
+      await createPage.selectStartDate(1, 'Jul', 2026, 1);
       // End date input is readonly — force the value via native setter to trigger Angular validation
-      await createPage.forceSetEndDate('Fri, May 01, 2026');
+      await createPage.forceSetEndDate('Mon, Jun 01, 2026');
 
       await expect(createPage.endDateError).toHaveText("End date can't be earlier than start date");
     }
