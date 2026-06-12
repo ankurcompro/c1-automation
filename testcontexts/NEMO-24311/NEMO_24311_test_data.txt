@@ -1,0 +1,12 @@
+Following are the steps to access the forms on Thor env
+1. Launch https://micro-nemo.comprodls.com/
+2. Login as admin with 'asgardmqaadmin1@mailsac.com' as email and 'Compro11' as password
+3. Go to STUDENTS tab
+4. Click on 'Manage students' drop-down
+
+If required, following data can be used in the forms
+1. Class key - F32y-gMFU
+2. Can use mailsac.com as email provider like, 'cqatestaiuser1@mailsac.com' for adding any new email
+3. For existing child username you can use 'cqatestaichild1'
+4. For existing adult email you can use 'cqatestl1_23feb2026@mailsac.com'
+

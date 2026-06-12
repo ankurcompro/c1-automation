@@ -1,0 +1,521 @@
+{
+  "jira": {
+    "id": "NEMO-24311",
+    "summary": "[Regression] Warning message modal is missing when navigating away from the bulk form"
+  },
+  "forms": {
+    "new_child_username_form": "Create new accounts for children (/children/new_csv)",
+    "new_adult_username_form": "Create adult student accounts (/username-adult/new_csv)",
+    "new_adult_email_form": "Invite adult students and teachers (/email-adult/invite)",
+    "existing_child_username_form": "Add existing accounts to classes (/username/existing)",
+    "existing_adult_email_form": "Invite students and teachers - existing adult (/email/invite)"
+  },
+  "summary_counts": {
+    "total": 19,
+    "high": 17,
+    "medium": 2
+  },
+  "test_cases": [
+    {
+      "id": "TC-001",
+      "form": "new_child_username_form",
+      "priority": "High",
+      "summary": "Warning modal shown after CSV upload — new_child_username_form (CUP logo)",
+      "preconditions": [
+        "Logged in as school admin.",
+        "On 'Create new accounts for children' page (/children/new_csv)."
+      ],
+      "steps": [
+        {
+          "step": 1,
+          "action": "Upload a valid CSV file using '+ Upload file'."
+        },
+        {
+          "step": 2,
+          "action": "Click the Cambridge University Press (CUP) logo in the header."
+        }
+      ],
+      "expected_results": [
+        "Warning modal appears with title 'Warning', message 'If you leave this page now, all the data in the form will be lost. Do you still want to leave?', and buttons 'Yes, leave the page' and 'No, go back to the form'."
+      ]
+    },
+    {
+      "id": "TC-002",
+      "form": "new_child_username_form",
+      "priority": "Medium",
+      "summary": "No warning modal shown when form is empty — new_child_username_form",
+      "preconditions": [
+        "Logged in as school admin.",
+        "On 'Create new accounts for children' page.",
+        "No CSV uploaded, form untouched."
+      ],
+      "steps": [
+        {
+          "step": 1,
+          "action": "Without uploading any file or editing any field, click the CUP logo."
+        }
+      ],
+      "expected_results": [
+        "No warning modal — navigation proceeds directly to the target page."
+      ]
+    },
+    {
+      "id": "TC-003",
+      "form": "new_adult_username_form",
+      "priority": "High",
+      "summary": "Warning modal shown after CSV upload — new_adult_username_form (CUP logo)",
+      "preconditions": [
+        "Logged in as school admin.",
+        "On 'Create adult student accounts' page (/username-adult/new_csv)."
+      ],
+      "steps": [
+        {
+          "step": 1,
+          "action": "Upload a valid CSV file using '+ Upload file'."
+        },
+        {
+          "step": 2,
+          "action": "Click the CUP logo."
+        }
+      ],
+      "expected_results": [
+        "Warning modal appears with title 'Warning', message 'If you leave this page now, all the data in the form will be lost. Do you still want to leave?', and buttons 'Yes, leave the page' and 'No, go back to the form'."
+      ]
+    },
+    {
+      "id": "TC-004",
+      "form": "new_adult_username_form",
+      "priority": "High",
+      "summary": "Warning modal shown after manual field edit — new_adult_username_form (CUP logo)",
+      "preconditions": [
+        "Logged in as school admin.",
+        "On 'Create adult student accounts' page."
+      ],
+      "steps": [
+        {
+          "step": 1,
+          "action": "Manually type into any form field (e.g. username or password)."
+        },
+        {
+          "step": 2,
+          "action": "Click the CUP logo."
+        }
+      ],
+      "expected_results": [
+        "Warning modal appears with title 'Warning', message 'If you leave this page now, all the data in the form will be lost. Do you still want to leave?', and buttons 'Yes, leave the page' and 'No, go back to the form'."
+      ]
+    },
+    {
+      "id": "TC-005",
+      "form": "new_adult_email_form",
+      "priority": "High",
+      "summary": "Warning modal shown after manual edit — new_adult_email_form (CUP logo)",
+      "preconditions": [
+        "Logged in as school admin.",
+        "On 'Invite adult students and teachers' page (/email-adult/invite)."
+      ],
+      "steps": [
+        {
+          "step": 1,
+          "action": "Manually type an email address, first name, last name, and select a role."
+        },
+        {
+          "step": 2,
+          "action": "Click the CUP logo."
+        }
+      ],
+      "expected_results": [
+        "Warning modal appears with title 'Leave this page?', message 'You have not finished adding new students/teachers yet, but this form has been saved for you.', and buttons 'I'll return later' and 'Back to form'."
+      ]
+    },
+    {
+      "id": "TC-006",
+      "form": "new_adult_email_form",
+      "priority": "High",
+      "summary": "Warning modal shown after CSV upload — new_adult_email_form (CUP logo)",
+      "preconditions": [
+        "Logged in as school admin.",
+        "On 'Invite adult students and teachers' page (/email-adult/invite)."
+      ],
+      "steps": [
+        {
+          "step": 1,
+          "action": "Upload a valid CSV file via '+ Upload file'."
+        },
+        {
+          "step": 2,
+          "action": "Click CUP logo."
+        }
+      ],
+      "expected_results": [
+        "Warning modal appears with title 'Leave this page?', message 'You have not finished adding new students/teachers yet, but this form has been saved for you.', and buttons 'I'll return later' and 'Back to form'."
+      ]
+    },
+    {
+      "id": "TC-007",
+      "form": "existing_child_username_form",
+      "priority": "High",
+      "summary": "Warning modal shown after manual edit — existing_child_username_form (CUP logo)",
+      "preconditions": [
+        "Logged in as school admin.",
+        "On 'Add existing child accounts to classes' page (/username/existing)."
+      ],
+      "steps": [
+        {
+          "step": 1,
+          "action": "Manually type a child's username, first name, last name, and class key."
+        },
+        {
+          "step": 2,
+          "action": "Click CUP logo."
+        }
+      ],
+      "expected_results": [
+        "Warning modal appears with title 'Leave this page?', message 'You have not finished adding students yet, but this form has been saved for you', and buttons 'I'll return later' and 'Back to form'."
+      ]
+    },
+    {
+      "id": "TC-008",
+      "form": "existing_child_username_form",
+      "priority": "High",
+      "summary": "Warning modal shown after CSV upload — existing_child_username_form (CUP logo)",
+      "preconditions": [
+        "Logged in as school admin.",
+        "On 'Add existing child accounts to classes' page (/username/existing)."
+      ],
+      "steps": [
+        {
+          "step": 1,
+          "action": "Upload a CSV file via '+ Upload file'."
+        },
+        {
+          "step": 2,
+          "action": "Click CUP logo."
+        }
+      ],
+      "expected_results": [
+        "Warning modal appears with title 'Leave this page?', message 'You have not finished adding students yet, but this form has been saved for you', and buttons 'I'll return later' and 'Back to form'."
+      ]
+    },
+    {
+      "id": "TC-009",
+      "form": "existing_adult_email_form",
+      "priority": "High",
+      "summary": "Warning modal shown after manual edit — existing_adult_email_form (CUP logo)",
+      "preconditions": [
+        "Logged in as school admin.",
+        "On 'Invite students and teachers' page (/email/invite)."
+      ],
+      "steps": [
+        {
+          "step": 1,
+          "action": "Manually enter an email address and select a role from 'Choose role' dropdown."
+        },
+        {
+          "step": 2,
+          "action": "Click CUP logo."
+        }
+      ],
+      "expected_results": [
+        "Warning modal appears with title 'Leave this page?', message 'You have not finished adding new students/teachers yet, but this form has been saved for you.', and buttons 'I'll return later' and 'Back to form'."
+      ]
+    },
+    {
+      "id": "TC-010",
+      "form": "All forms",
+      "priority": "High",
+      "summary": "Warning modal — 'My profile' and 'Logout' navigation also trigger modal (All forms)",
+      "preconditions": [
+        "Logged in as school admin.",
+        "Any of the 5 forms with data entered or CSV uploaded."
+      ],
+      "steps": [
+        {
+          "step": 1,
+          "action": "Edit any form field or upload a CSV file."
+        },
+        {
+          "step": 2,
+          "action": "Click the profile dropdown and select 'My profile'."
+        },
+        {
+          "step": 3,
+          "action": "Click 'Back to form' / 'No, go back to the form' to dismiss, then select 'Logout' from profile dropdown."
+        }
+      ],
+      "expected_results": [
+        "2. Warning modal is displayed (same modal as triggered by CUP logo).",
+        "3. Warning modal is displayed again."
+      ]
+    },
+    {
+      "id": "TC-011a",
+      "form": "new_child_username_form",
+      "priority": "High",
+      "summary": "'Yes, leave the page' discards data — new_child_username_form (no save behaviour)",
+      "preconditions": [
+        "Logged in as school admin.",
+        "On 'Create new accounts for children' page.",
+        "CSV uploaded or data manually entered."
+      ],
+      "steps": [
+        {
+          "step": 1,
+          "action": "Upload CSV or enter data, then click CUP logo to trigger Warning modal."
+        },
+        {
+          "step": 2,
+          "action": "Click 'Yes, leave the page'."
+        },
+        {
+          "step": 3,
+          "action": "Navigate back to 'Create new accounts for children' page."
+        }
+      ],
+      "expected_results": [
+        "1. Modal shown: 'Yes, leave the page' | 'No, go back to the form'.",
+        "2. User is navigated away from the form.",
+        "3. Form is empty — no data retained, confirming data was discarded (no save on this form)."
+      ]
+    },
+    {
+      "id": "TC-011b",
+      "form": "new_adult_username_form",
+      "priority": "High",
+      "summary": "'Yes, leave the page' discards data — new_adult_username_form (no save behaviour)",
+      "preconditions": [
+        "Logged in as school admin.",
+        "On 'Create adult student accounts' page.",
+        "CSV uploaded or data manually entered."
+      ],
+      "steps": [
+        {
+          "step": 1,
+          "action": "Upload CSV or enter data, then click CUP logo to trigger Warning modal."
+        },
+        {
+          "step": 2,
+          "action": "Click 'Yes, leave the page'."
+        },
+        {
+          "step": 3,
+          "action": "Navigate back to 'Create adult student accounts' page."
+        }
+      ],
+      "expected_results": [
+        "1. Modal shown: 'Yes, leave the page' | 'No, go back to the form'.",
+        "2. User is navigated away from the form.",
+        "3. Form is empty — data was discarded (no save on this form)."
+      ]
+    },
+    {
+      "id": "TC-011c",
+      "form": "new_adult_email_form",
+      "priority": "High",
+      "summary": "'I'll return later' saves data — new_adult_email_form (form is saved)",
+      "preconditions": [
+        "Logged in as school admin.",
+        "On 'Invite adult students and teachers' page.",
+        "Data manually entered; 'Saved X minutes ago' timestamp visible."
+      ],
+      "steps": [
+        {
+          "step": 1,
+          "action": "Enter data in email, name, and role fields; confirm 'Saved X minutes ago' is shown; click CUP logo."
+        },
+        {
+          "step": 2,
+          "action": "Click 'I'll return later'."
+        },
+        {
+          "step": 3,
+          "action": "Navigate back to the adult email invite form."
+        }
+      ],
+      "expected_results": [
+        "1. Modal shown: 'Leave this page?' with 'I'll return later' | 'Back to form'.",
+        "2. User is navigated away from the form.",
+        "3. Previously entered data is still present in the form — data was saved, not discarded."
+      ]
+    },
+    {
+      "id": "TC-011d",
+      "form": "existing_child_username_form",
+      "priority": "High",
+      "summary": "'I'll return later' saves data — existing_child_username_form (form is saved)",
+      "preconditions": [
+        "Logged in as school admin.",
+        "On 'Add existing child accounts to classes' page.",
+        "Data entered; saved timestamp visible."
+      ],
+      "steps": [
+        {
+          "step": 1,
+          "action": "Enter child username, first name, last name, and class key; confirm saved timestamp appears; click CUP logo."
+        },
+        {
+          "step": 2,
+          "action": "Click 'I'll return later'."
+        },
+        {
+          "step": 3,
+          "action": "Navigate back to the existing child username form."
+        }
+      ],
+      "expected_results": [
+        "1. Modal shown: 'Leave this page?' with 'I'll return later' | 'Back to form'.",
+        "2. User is navigated away.",
+        "3. Previously entered data is retained in the form — data was saved."
+      ]
+    },
+    {
+      "id": "TC-012",
+      "form": "All forms",
+      "priority": "High",
+      "summary": "'Back to form' / 'No, go back to the form' keeps user on form with data intact (All forms)",
+      "preconditions": [
+        "Any of the 5 forms with data entered or CSV uploaded.",
+        "Warning modal triggered."
+      ],
+      "steps": [
+        {
+          "step": 1,
+          "action": "Edit form or upload CSV, then click CUP logo to trigger modal."
+        },
+        {
+          "step": 2,
+          "action": "Click 'Back to form' (email/existing forms) or 'No, go back to the form' (new username forms)."
+        }
+      ],
+      "expected_results": [
+        "1. Warning modal is displayed.",
+        "2. Modal dismisses; user remains on the current form; all previously entered data is intact."
+      ]
+    },
+    {
+      "id": "TC-014",
+      "form": "All forms",
+      "priority": "High",
+      "summary": "Warning modal content and buttons are correct per form type (All forms)",
+      "preconditions": [
+        "Logged in as school admin.",
+        "One of the 5 forms with data entered.",
+        "Warning modal triggered via CUP logo."
+      ],
+      "steps": [
+        {
+          "step": 1,
+          "action": "On new_child_username_form or new_adult_username_form — upload CSV and click CUP logo."
+        },
+        {
+          "step": 2,
+          "action": "On new_adult_email_form or existing_adult_email_form — enter data and click CUP logo."
+        },
+        {
+          "step": 3,
+          "action": "On existing_child_username_form — enter data and click CUP logo."
+        }
+      ],
+      "expected_results": [
+        "1. Modal title: 'Warning'; body: 'If you leave this page now, all the data in the form will be lost. Do you still want to leave?'; buttons: 'Yes, leave the page' (left) and 'No, go back to the form' (right, blue).",
+        "2. Modal title: 'Leave this page?'; body: 'You have not finished adding new students/teachers yet, but this form has been saved for you.'; buttons: 'I'll return later' (left) and 'Back to form' (right, blue).",
+        "3. Modal title: 'Leave this page?'; body: 'You have not finished adding students yet, but this form has been saved for you'; buttons: 'I'll return later' (left, purple text link) and 'Back to form' (right, purple pill button); note: this modal also has an X close icon in the top right."
+      ]
+    },
+    {
+      "id": "TC-NEW-1",
+      "form": "All forms",
+      "priority": "High",
+      "summary": "Warning modal — 'Back link' navigation also triggers modal (All forms)",
+      "preconditions": [
+        "Logged in as school admin.",
+        "Any of the 5 forms with data entered or CSV uploaded."
+      ],
+      "steps": [
+        {
+          "step": 1,
+          "action": "Edit any form field or upload a CSV file."
+        },
+        {
+          "step": 2,
+          "action": "Click the '< Back' link in the top left of the page."
+        },
+        {
+          "step": 3,
+          "action": "Click 'Back to form' or 'No, go back to the form' to dismiss."
+        }
+      ],
+      "expected_results": [
+        "2. Warning modal is displayed (same modal as triggered by CUP logo).",
+        "3. User returns to form with data intact."
+      ]
+    },
+    {
+      "id": "TC-NEW-2",
+      "form": "All forms",
+      "priority": "High",
+      "summary": "Warning modal — notification bell navigation also triggers modal (All forms)",
+      "preconditions": [
+        "Logged in as school admin.",
+        "Any of the 5 forms with data entered or CSV uploaded.",
+        "Notification bell shows at least 1 notification."
+      ],
+      "steps": [
+        {
+          "step": 1,
+          "action": "Edit any form field or upload a CSV file."
+        },
+        {
+          "step": 2,
+          "action": "Click the notification bell icon in the header."
+        },
+        {
+          "step": 3,
+          "action": "Click on any notification in the drop-down."
+        },
+        {
+          "step": 4,
+          "action": "Click 'Back to form' or 'No, go back to the form'."
+        }
+      ],
+      "expected_results": [
+        "3. No warning modal is displayed when clicking the notification; navigation proceeds.",
+        "4. User returns to form with data intact."
+      ]
+    },
+    {
+      "id": "TC-NEW-3",
+      "form": "All forms",
+      "priority": "Medium",
+      "summary": "No warning modal shown when form is empty — all navigation triggers (All forms)",
+      "preconditions": [
+        "Logged in as school admin.",
+        "Any of the 5 forms — no data entered, no CSV uploaded."
+      ],
+      "steps": [
+        {
+          "step": 1,
+          "action": "Without touching any field or uploading any file, click the CUP logo."
+        },
+        {
+          "step": 2,
+          "action": "Navigate back to the form; then click '< Back' link without entering data."
+        },
+        {
+          "step": 3,
+          "action": "Navigate back to the form; click on the bell icon and then click any notification present under it."
+        },
+        {
+          "step": 4,
+          "action": "Navigate back to the form; then use 'My profile' and 'Logout' without entering data."
+        }
+      ],
+      "expected_results": [
+        "1. No warning modal — navigation proceeds directly.",
+        "2. No warning modal.",
+        "3. No warning modal.",
+        "4. No warning modal in either case."
+      ]
+    }
+  ]
+}

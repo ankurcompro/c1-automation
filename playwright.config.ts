@@ -26,6 +26,7 @@ export default defineConfig({
   reporter: [
     ['list'],
     ['html'],
+    ['./reporters/video-rename-reporter'],
     // ['./reporters/github-issue-reporter'],
   ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
