@@ -1,4 +1,4 @@
 Url - https://micro-nemo.comprodls.com/
 Login email - adani@cambridge.org
-Login password - stored in .env as LOGIN_PASSWORD
+Login password - Compro11
 School name - Ankur Test School

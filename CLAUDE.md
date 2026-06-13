@@ -36,11 +36,18 @@ There are no `npm run` scripts — always use `npx playwright test` directly.
 ## Test Run Improvements
 
 - **Follow the three-step default:** MCP server run first (verification + issue reporting), then CLI run (video recording), then email report via Resend MCP. Never skip any step.
+- **Use the Page Object Model during the MCP run too.** Drive the interactive MCP run with the same locators/actions defined in `pages/` (role + accessible name, e.g. `getByRole('link', { name: 'Cambridge One Home' })`), not improvised CSS selectors or `browser_evaluate` hacks. If a locator/action is missing, add it to the page object rather than inlining it. The MCP run and the CLI spec should stay consistent.
 - **Always run the browser maximized.** Use `browser_resize` (or equivalent) to set the viewport to the full screen size before starting a test run.
 
 ## Authentication
 
-`global-setup.ts` runs before any test suite. It launches Chromium, logs in using credentials from `.env` (`LOGIN_EMAIL`, `LOGIN_PASSWORD`), and saves the browser's storage state to `auth/storageState.chromium.json`. Tests consume the saved state so they start already authenticated — no login steps needed inside test files.
+`global-setup.ts` runs before any test suite. It launches Chromium, logs in, and saves the browser's storage state to `auth/storageState.chromium.json`. Tests consume the saved state so they start already authenticated — no login steps needed inside test files.
+
+**Login credentials never come from `.env`.** Each suite reads its login from its own test-context data file, so different suites can use different users:
+- `global-setup.ts` parses `testcontexts/GenericTestData.txt` (`Login email - …` / `Login password - …`) for the SupportAdmin user.
+- `testcontexts/NEMO-24311/generate-auth.mjs` parses `NEMO_24311_test_data.txt` (`Login as admin with '<email>' as email and '<password>' as password`).
+
+When adding a suite, put its login in that suite's `*_test_data.txt` and parse it in setup — do not add `LOGIN_*` vars to `.env`.
 
 Firefox and WebKit login calls are commented out in `global-setup.ts` (and their projects are also commented out in `playwright.config.ts`). To re-enable a browser, uncomment the corresponding `login(...)` line in `global-setup.ts` and the matching project in `playwright.config.ts`.
 
@@ -62,6 +69,19 @@ Defined in `playwright.config.ts`:
 `fullyParallel: false` means test files can run in parallel across workers, but tests **within a single file always run sequentially** in definition order. This is required for test suites where later tests depend on state created by earlier ones (e.g. TC_015 relies on TC_014 having created a licence). Do **not** use `test.describe.serial()` to achieve ordering — it skips remaining tests on any failure, which is not the desired behaviour here.
 
 Video is recorded for every run. To save space, change `video: 'on'` to `'retain-on-failure'` in `playwright.config.ts`.
+
+## Test Suites & Auth Models
+
+Two independent suites live in `tests/`, each driven by a **different login user and storage state**:
+
+| Suite | Page object | User / auth | Storage state |
+|-------|-------------|-------------|---------------|
+| `licence-form-validation.spec.ts` | `SupportAdmin*Page` | SupportAdmin — credentials parsed from `testcontexts/GenericTestData.txt` by `global-setup.ts` | `auth/storageState.chromium.json` (config default) |
+| `nemo-24311-warning-modal.spec.ts` | `SchoolAdminBulkFormsPage` | MQA Sierra school admin (`asgardmqaadmin1@mailsac.com`), **not** the global-setup user | `auth/storageState.nemo24311.json` via per-file `test.use({ storageState })` |
+
+The NEMO-24311 storage state is generated out-of-band by `testcontexts/NEMO-24311/generate-auth.mjs` (run `node testcontexts/NEMO-24311/generate-auth.mjs`), **not** by `global-setup.ts`. Its session token is **short-lived** — regenerate it immediately before **both** the MCP run and the CLI run. If the token expires mid-run, every subsequent test fails fast with "Not authenticated — redirected to /login" (the guard in `SchoolAdminBulkFormsPage.goto`).
+
+When adding a suite that needs a non-default user, follow the NEMO-24311 pattern: a dedicated `generate-auth.mjs` + `test.use({ storageState })` at the top of the spec, rather than changing `global-setup.ts`.
 
 ## Architecture
 
@@ -118,7 +138,9 @@ Three reporters run on every `npx playwright test` execution (wired in `playwrig
 
 1. **`list`** — stdout progress
 2. **`html`** — browsable HTML report (`npx playwright show-report`)
-3. **`./reporters/github-issue-reporter`** — CI/CLI only. On any test failure during `npx playwright test`:
+3. **`./reporters/video-rename-reporter`** — copies each recording into `videos/` named by test-case ID (see [Coding Improvements](#coding-improvements)).
+
+A fourth reporter, **`./reporters/github-issue-reporter`**, is present in the repo but **currently commented out** in `playwright.config.ts`. Re-enable it (uncomment the reporter line) to auto-file issues on CLI failures. When enabled, on any test failure during `npx playwright test` it:
    - Searches GitHub for an existing open issue with the same title to avoid duplicates (searches by `automation-failure` label + title)
    - Uploads the failure screenshot to `test-screenshots/failure-{timestamp}.png` in the repo
    - Creates a GitHub issue with the error diff, stack trace, and screenshot link
@@ -145,7 +167,8 @@ Apply selectors in this priority order:
 ## Coding Improvements
 
 - **Scroll before asserting text.** When verifying text on a page, scroll the target element into view before asserting, so the assertion runs against a fully-rendered, visible element.
-- **Video file naming.** Prefix each test video file name with the test case ID (e.g. `TC_001`).
+- **Video file naming.** The `./reporters/video-rename-reporter` copies each test's recording into `videos/` named `<TC-id>__<title>__<status>.webm` (e.g. `TC-002__No_modal_when_form_empty...__passed.webm`) so recordings map back to their test case. Playwright's originals stay in `test-results/<hash>/video.webm` (the HTML report still links to those). Test titles **must** start with the TC id (e.g. `TC-001 ...`) for the prefix to be picked up. `videos/` is never auto-cleaned — files from previous runs accumulate there.
+- **Do not pass `--reporter` on the CLI.** Passing `--reporter=list` (or any reporter flag) replaces all reporters in `playwright.config.ts`, silently disabling `video-rename-reporter`. Always run `npx playwright test` without a `--reporter` flag so all three configured reporters fire.
 
 ## GitHub Reporting
 
@@ -186,11 +209,13 @@ When asked to implement/generate Playwright test scripts from the json file, use
 
 | File | Purpose |
 |------|---------|
-| `ACs.txt` | Acceptance Criteria for the feature under test |
+| `ACs.txt` | Acceptance Criteria for the current feature under test |
+| `ACs_TC1_to_TC10.txt` | ACs for the first TC batch (licence suite) |
 | `GeneralPreRequisite.txt` | Pre-requisite steps included in every test case |
-| `GenericTestData.txt` | Environment URL, login credentials, and test school name |
-| `webtestcontext.txt` | Standing instructions for test generation (selectors, environments, authoring rules) |
-| `test-cases.json` | Generated test cases in JSON format, derived from ACs |
+| `GenericTestData.txt` | Environment URL, SupportAdmin login, and test school name |
+| `test-cases-tc1-to-tc10.json` | Generated test cases (TC-001–TC-010) for the licence suite |
+| `test-cases-tc11-to-tc16.json` | Generated test cases (TC-011–TC-016) for the licence suite |
+| `NEMO-24311/` | Suite-specific data: CSVs, test data file, `generate-auth.mjs` |
 
 ## Environments
 
